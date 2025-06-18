@@ -1,11 +1,36 @@
-import { ArrowDown, Github, Linkedin, Sparkles } from "lucide-react";
+import { ArrowDown, Github, Linkedin, Sparkles, Mail, Phone, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
 const Index = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Form submitted:', formData);
+    // Here you would typically send the form data to a backend service
+    alert('Thank you for your message! I will get back to you soon.');
+    setFormData({ name: '', email: '', message: '' });
   };
 
   return (
@@ -91,23 +116,21 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Enhanced profile section */}
+          {/* Profile Photo */}
           <div className="flex justify-center lg:justify-end">
             <div className="relative group">
               {/* Decorative rings */}
               <div className="absolute -inset-4 bg-[#7B8F71]/10 rounded-2xl rotate-3 group-hover:rotate-6 transition-transform duration-500"></div>
               <div className="absolute -inset-2 bg-[#7B8F71]/5 rounded-2xl -rotate-2 group-hover:-rotate-3 transition-transform duration-500"></div>
               
-              {/* Profile card */}
-              <div className="relative w-80 h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-all duration-500 overflow-hidden">
+              {/* Profile photo */}
+              <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500">
+                <img 
+                  src="/lovable-uploads/b8ee3780-9497-48df-8f41-9eab09526720.png" 
+                  alt="Shishir Singh - Full Stack Developer"
+                  className="w-full h-full object-cover object-center"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#7B8F71]/20 to-transparent"></div>
-                <div className="relative z-10 text-center">
-                  <div className="w-24 h-24 bg-[#7B8F71]/20 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <Sparkles className="w-12 h-12 text-[#7B8F71]" />
-                  </div>
-                  <span className="text-gray-600 text-lg font-medium">Profile Photo</span>
-                  <p className="text-sm text-gray-500 mt-2">Coming Soon</p>
-                </div>
                 
                 {/* Floating elements */}
                 <div className="absolute top-4 right-4 w-3 h-3 bg-[#7B8F71] rounded-full animate-pulse"></div>
@@ -299,51 +322,131 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
+      {/* Enhanced Contact Section with Form */}
       <section id="contact" className="py-20 px-4 bg-gray-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl font-bold text-black mb-16">Get In Touch</h2>
-          <Card className="p-12 border-none shadow-lg">
-            <CardContent className="p-0 space-y-8">
-              <p className="text-xl text-gray-700 mb-8">
-                Ready to bring your ideas to life? Let's discuss your next project.
-              </p>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-semibold text-[#7B8F71]">Contact Info</h3>
-                  <div className="space-y-2 text-left">
-                    <p className="text-gray-700">
-                      <span className="font-semibold">Email:</span> singhshishir4727@gmail.com
-                    </p>
-                    <p className="text-gray-700">
-                      <span className="font-semibold">Phone:</span> +91 77240 73214
-                    </p>
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-5xl font-bold text-black mb-16 text-center">Get In Touch</h2>
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Contact Info */}
+            <div className="space-y-8">
+              <Card className="p-8 border-none shadow-lg">
+                <CardContent className="p-0 space-y-6">
+                  <h3 className="text-3xl font-semibold text-[#7B8F71] mb-6">Let's Connect</h3>
+                  <p className="text-lg text-gray-700 mb-8">
+                    Ready to bring your ideas to life? Let's discuss your next project and create something amazing together.
+                  </p>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-[#7B8F71]/10 rounded-lg flex items-center justify-center">
+                        <Mail className="w-6 h-6 text-[#7B8F71]" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">Email</p>
+                        <p className="text-gray-600">singhshishir4727@gmail.com</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-[#7B8F71]/10 rounded-lg flex items-center justify-center">
+                        <Phone className="w-6 h-6 text-[#7B8F71]" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">Phone</p>
+                        <p className="text-gray-600">+91 77240 73214</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-semibold text-[#7B8F71]">Follow Me</h3>
-                  <div className="flex justify-center md:justify-start gap-4">
-                    <a 
-                      href="https://linkedin.com/in/shishir-singhh" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="bg-[#7B8F71] hover:bg-[#6B7F61] text-white p-3 rounded-lg transition-colors duration-300"
-                    >
-                      <Linkedin className="w-6 h-6" />
-                    </a>
-                    <a 
-                      href="https://github.com/SHISHIR1507" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="bg-[#7B8F71] hover:bg-[#6B7F61] text-white p-3 rounded-lg transition-colors duration-300"
-                    >
-                      <Github className="w-6 h-6" />
-                    </a>
+                  
+                  <div className="pt-6">
+                    <h4 className="text-xl font-semibold text-[#7B8F71] mb-4">Follow Me</h4>
+                    <div className="flex gap-4">
+                      <a 
+                        href="https://linkedin.com/in/shishir-singhh" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="w-12 h-12 bg-[#7B8F71] hover:bg-[#6B7F61] text-white rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                      >
+                        <Linkedin className="w-6 h-6" />
+                      </a>
+                      <a 
+                        href="https://github.com/SHISHIR1507" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="w-12 h-12 bg-[#7B8F71] hover:bg-[#6B7F61] text-white rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                      >
+                        <Github className="w-6 h-6" />
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* Contact Form */}
+            <Card className="p-8 border-none shadow-lg">
+              <CardContent className="p-0">
+                <h3 className="text-3xl font-semibold text-[#7B8F71] mb-6">Send a Message</h3>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+                      Full Name
+                    </Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={handleFormChange}
+                      placeholder="Your full name"
+                      required
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#7B8F71] focus:ring-[#7B8F71] transition-colors"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                      Email Address
+                    </Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleFormChange}
+                      placeholder="your.email@example.com"
+                      required
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#7B8F71] focus:ring-[#7B8F71] transition-colors"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-sm font-medium text-gray-700">
+                      Message
+                    </Label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleFormChange}
+                      placeholder="Tell me about your project or just say hello..."
+                      required
+                      rows={5}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#7B8F71] focus:ring-[#7B8F71] transition-colors resize-none"
+                    />
+                  </div>
+                  
+                  <Button
+                    type="submit"
+                    className="w-full bg-[#7B8F71] hover:bg-[#6B7F61] text-white py-3 px-6 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    Send Message
+                    <Send className="w-5 h-5" />
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 
