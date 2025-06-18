@@ -1,3 +1,4 @@
+
 import { ArrowDown, Github, Linkedin, Sparkles, Mail, Phone, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import emailjs from '@emailjs/browser';
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +15,8 @@ const Index = () => {
     email: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -25,12 +30,41 @@ const Index = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Here you would typically send the form data to a backend service
-    alert('Thank you for your message! I will get back to you soon.');
-    setFormData({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+        to_name: 'Shishir Singh',
+      };
+
+      await emailjs.send(
+        'service_q66iu9d',
+        'template_2n1so1i',
+        templateParams,
+        'kdkru72quB2wAnfUv'
+      );
+
+      toast({
+        title: "Message sent successfully!",
+        description: "Thank you for your message. I'll get back to you soon.",
+      });
+
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      toast({
+        title: "Failed to send message",
+        description: "Please try again or contact me directly via email.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -116,15 +150,15 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Profile Photo */}
+          {/* Enhanced Profile Photo - Made Bigger */}
           <div className="flex justify-center lg:justify-end">
             <div className="relative group">
               {/* Decorative rings */}
-              <div className="absolute -inset-4 bg-[#7B8F71]/10 rounded-2xl rotate-3 group-hover:rotate-6 transition-transform duration-500"></div>
-              <div className="absolute -inset-2 bg-[#7B8F71]/5 rounded-2xl -rotate-2 group-hover:-rotate-3 transition-transform duration-500"></div>
+              <div className="absolute -inset-6 bg-[#7B8F71]/10 rounded-2xl rotate-3 group-hover:rotate-6 transition-transform duration-500"></div>
+              <div className="absolute -inset-3 bg-[#7B8F71]/5 rounded-2xl -rotate-2 group-hover:-rotate-3 transition-transform duration-500"></div>
               
-              {/* Profile photo */}
-              <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500">
+              {/* Profile photo - Made significantly bigger */}
+              <div className="relative w-96 h-[500px] lg:w-[450px] lg:h-[550px] rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500">
                 <img 
                   src="/lovable-uploads/b8ee3780-9497-48df-8f41-9eab09526720.png" 
                   alt="Shishir Singh - Full Stack Developer"
@@ -322,7 +356,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Enhanced Contact Section with Form */}
+      {/* Enhanced Contact Section with EmailJS Form */}
       <section id="contact" className="py-20 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-5xl font-bold text-black mb-16 text-center">Get In Touch</h2>
@@ -383,7 +417,7 @@ const Index = () => {
               </Card>
             </div>
             
-            {/* Contact Form */}
+            {/* Contact Form with EmailJS Integration */}
             <Card className="p-8 border-none shadow-lg">
               <CardContent className="p-0">
                 <h3 className="text-3xl font-semibold text-[#7B8F71] mb-6">Send a Message</h3>
@@ -438,9 +472,10 @@ const Index = () => {
                   
                   <Button
                     type="submit"
-                    className="w-full bg-[#7B8F71] hover:bg-[#6B7F61] text-white py-3 px-6 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    className="w-full bg-[#7B8F71] hover:bg-[#6B7F61] text-white py-3 px-6 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Send Message
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                     <Send className="w-5 h-5" />
                   </Button>
                 </form>
